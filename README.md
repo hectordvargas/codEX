@@ -1,10 +1,10 @@
 # codEX
 This is a small web app to search for holidays
 
-This project includes code and resources based on: 
-PHP.NET 
+Sources: 
+PHP.NET
 W3SHOOLS.COM
-CALENDAR BY: CODINGWITHSARA.COM
-and others.
+Calendar: CODINGWITHSARA.COM
+Database: MySQL
 
 Currently the project only includes US holidays from 2013 to 2023, however more countries will be included in the future as this project matures.
