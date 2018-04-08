@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Holidays Search</title>  
+      <link href="assets/css/style.css" rel="stylesheet">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+      <link href='https://fonts.googleapis.com/css?family=Stalemate&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+      <link href='https://fonts.googleapis.com/css?family=Sue+Ellen+Francisco' rel='stylesheet' type='text/css'>
+  </head>
+  <body>
+      <div class="main">
+          <div class="center">
+              <div class="form">
+                  <h2>Holiday Search</h2>
+                  <form>
+                      <input type="date" id="sDate">
+                      <input type="text" id="sCountry" placeholder="COUNTRY CODE: US">
+                      <input type="number" id="sDays" placeholder="Number of Days">
+                      <input type="button" value="SEARCH" id="sSearch">
+                  </form>
+                  <p>Designed by Hector Vargas.<br>US Holidays only from 2016 to 2023.</p>
+              </div>
+              <div class="result">
+                  <div class="calendar"></div>
+                  <div class="query"></div>
+              </div>
+              <script> 
+                  $('#sSearch').click(function(){
+                      var sDate = $('#sDate').val();
+                      var sCountry = $('#sCountry').val();
+                      var sDays = $('#sDays').val();
+                      
+                      //GET CALENDAR
+                      $.get('calendar.php',{date:sDate},function(data,status){
+                          if(status=='success'){
+                              $('.calendar').html(data);
+                          }
+                      });
+                      
+                      //GET LIST OF DATES 
+                      $.post('sDates.php',{
+                          date:sDate,
+                          days:sDays,                          
+                      },function(data, status){
+                          if(status=='success'){
+                              var sResult = data.split(',');
+                                $.each(sResult, function( index, value ) {
+                                    if(value!=''){
+                                        $('#'+value).addClass('weekday');
+                                        $('.day6, .day7').removeClass('weekday').addClass('weekend');
+                                        //$('td').each(function(){
+                                        //});
+                                    }
+                                });
+                          }
+                      });
+                      
+                      //GET LIST OF HOLIDAYS DURING THE YEAR
+                      $.post('sHolidays.php',{
+                          date:sDate,
+                          country:sCountry,                   
+                      },function(data, status){
+                          if(status=='success'){
+                              var sResult = data.split(',');
+                                $.each(sResult, function( index, value ) {
+                                    if(value!=''){
+                                        $('#'+value).addClass('holiday');
+                                    }
+                                });
+                          }
+                      });
+                  });   
+              </script>
+          </div>
+      </div>
+  </body>
+</html>
